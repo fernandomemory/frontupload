@@ -1,3 +1,7 @@
+<div *ngFor="let a of files">
+  <p>id:</p>{{a.id}} nome:{{a.name}}
+
+  </div>
 <button class="button btn-info" *ngIf='showFile' (click)='showFiles(false)'>Não mostrar imagens</button>
 
 <button class="button btn-info" *ngIf='!showFile' (click)='showFiles(true)'>Mostrar imagens</button>

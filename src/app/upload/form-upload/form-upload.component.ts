@@ -16,11 +16,13 @@ export class FormUploadComponent implements OnInit {
   constructor(private uploadService: UploadFileService) { }
 
   ngOnInit() {
+
   }
 
   selectFile(event) {
     this.selectedFiles = event.target.files;
   }
+
 
   upload() {
     this.progress.percentage = 0;
