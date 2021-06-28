@@ -64,7 +64,7 @@ export class UploadFileService {
 
   upload(item):Observable<any>{
     return this.http
-      .post<any>('https://api.radiomemory.com.br/ia/classify', JSON.stringify(item), this.httpOptions)
+      .post<any>('https://api.radiomemory.com.br/ia/classify', (item), this.httpOptions)
       .pipe(
         retry(2),
         catchError(this.handleError)
