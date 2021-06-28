@@ -50,46 +50,25 @@ export class DndDirective {
       const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
       const urlBase = window.URL.createObjectURL(file);
 
-      let base64 = await this.toDataURL(urlBase);
-
-      jSonImage = [
-        { "key": "86a756afd5fa8ea0635be3f0a0c32897"
-        , "image": base64
-        , "type": 1 }
-      ];
-
-
-      this.service.upload(jSonImage).subscribe((response)=>{
-        console.log(response)
-      })
-
+      base64 = await this.toDataURL(urlBase);
 
       files.push({
         file,
         url
       });
     }
+    
+    jSonImage = [
+      {
+        "key": "86a756afd5fa8ea0635be3f0a0c32897"
+        , "image": base64
+        , "type": 1
+      }
+    ];
 
-    const req = new HttpRequest('POST', ' https://api.radiomemory.com.br/ia/classify', jSonImage, {
-      reportProgress: true,
-      responseType: 'text'
-    });
-    this.http.request(req).subscribe(req=> {
-      console.log(req);
-    });
-
-   // console.log(req);
-    //const headers = new HttpHeaders().set('Content-Type','text/plain');
-    //headers.set('responseType', 'text');
-    //this.http.post<any>('http://localhost:8080/api/file/upload', base64,{headers:headers}).subscribe(data => {
-    //console.log(data);
-    //});
-    //const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    // this.http.post('https://webhook.site/6aa3ad0a-b436-48d4-bbf2-8ccc15e8e350', JSON.stringify(jSonImage), { headers: headers })
-    //   .subscribe(data => {
-    //     console.log(data);
-    //   });
+    this.service.upload(jSonImage[0]).subscribe((response) => {
+      console.log(response)
+    })
 
     if (files.length > 0) {
       this.files.emit(files);
