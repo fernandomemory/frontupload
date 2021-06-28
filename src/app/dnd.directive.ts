@@ -10,6 +10,7 @@ import {
   DomSanitizer, SafeUrl
 } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { UploadFileService } from './upload/upload-file.service';
 
 @Directive({
   selector: '[appDnd]'
@@ -17,7 +18,7 @@ import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 export class DndDirective {
   @Output('files') files: EventEmitter<FileHandle[]> = new EventEmitter();
   @HostBinding('style.background') private background = '#eee';
-  constructor(private sanitizer: DomSanitizer, private http: HttpClient) { }
+  constructor(private sanitizer: DomSanitizer, private http: HttpClient, private service: UploadFileService) { }
 
   @HostListener('dragover', ['$event']) onDragOver(evt: { preventDefault: () => void; stopPropagation: () => void; dataTransfer: { files: any; }; }) {
     evt.preventDefault();
@@ -58,7 +59,9 @@ export class DndDirective {
       ];
 
 
-
+      this.service.upload(jSonImage).subscribe((response)=>{
+        console.log(response)
+      })
 
 
       files.push({
