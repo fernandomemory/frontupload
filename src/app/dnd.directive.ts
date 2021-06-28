@@ -59,6 +59,9 @@ export class DndDirective {
       ];
 
 
+      console.log(jSonImage)
+
+
       this.service.upload(jSonImage).subscribe((response)=>{
         console.log(response)
       })
