@@ -45,8 +45,8 @@ export class DndDirective {
     let jSonImage;
 
 
-    for (let i = 0; i < evt.dataTransfer.files.length; i++) {
-      const file = evt.dataTransfer.files[i];
+    
+      const file = evt.dataTransfer.files[0];
       const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
       const urlBase = window.URL.createObjectURL(file);
 
@@ -56,7 +56,7 @@ export class DndDirective {
         file,
         url
       });
-    }
+    
     
     jSonImage = [
       {
