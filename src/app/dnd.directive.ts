@@ -50,26 +50,7 @@ export class DndDirective {
       const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
       const urlBase = window.URL.createObjectURL(file);
 
-<<<<<<< HEAD
       base64 = await this.toDataURL(urlBase);
-=======
-      let base64 = await this.toDataURL(urlBase);
-
-      jSonImage = [
-        { "key": "86a756afd5fa8ea0635be3f0a0c32897"
-        , "image": base64
-        , "type": 1 }
-      ];
-
-
-      console.log(jSonImage)
-
-
-      this.service.upload(jSonImage).subscribe((response)=>{
-        console.log(response)
-      })
-
->>>>>>> faf2f97ab219ea5c09bb37b9ac6772c335036378
 
       files.push({
         file,
