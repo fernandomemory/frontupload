@@ -16,6 +16,7 @@ import { UploadFileService } from './upload/upload-file.service';
   selector: '[appDnd]'
 })
 export class DndDirective {
+  answer:any;
   @Output('files') files: EventEmitter<FileHandle[]> = new EventEmitter();
   @HostBinding('style.background') private background = '#eee';
   constructor(private sanitizer: DomSanitizer, private http: HttpClient, private service: UploadFileService) { }
@@ -45,7 +46,7 @@ export class DndDirective {
     let jSonImage;
 
 
-    
+
       const file = evt.dataTransfer.files[0];
       const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
       const urlBase = window.URL.createObjectURL(file);
@@ -56,8 +57,8 @@ export class DndDirective {
         file,
         url
       });
-    
-    
+
+
     jSonImage = [
       {
         "key": "86a756afd5fa8ea0635be3f0a0c32897"
@@ -67,7 +68,7 @@ export class DndDirective {
     ];
 
     this.service.upload(jSonImage[0]).subscribe((response) => {
-      console.log(response)
+      console.log(response.classify['classe']);
     })
 
     if (files.length > 0) {
