@@ -36,17 +36,56 @@ export class UploadFileService {
   };
 
 
-  pushFileToStorage(file: File): Observable<HttpEvent<{}>> {
+  async pushFileToStorage(file: File): Promise<Observable<any>> {
     const formdata: FormData = new FormData();
-
+    //pushFileToStorage(file: File): Observable<HttpEvent<{}>>
     formdata.append('file', file);
+    let base64;
+    const urlBase = window.URL.createObjectURL(file);
+    base64 = await this.toDataURL(urlBase);
 
-    const req = new HttpRequest('POST', 'http://localhost:8080/api/file/upload', formdata, {
-      reportProgress: true,
-      responseType: 'text'
-    });
+    let jSonImage;
+    jSonImage = [
+      {
+        "key": "86a756afd5fa8ea0635be3f0a0c32897"
+        , "image": base64
+        , "type": 1
+      }
+    ];
 
-    return this.http.request(req);
+    this.upload(jSonImage[0]).subscribe((response) => {
+      console.log(response.classify['classe']);
+    })
+    return;
+    //const req = new HttpRequest('POST', 'http://localhost:8080/api/file/upload', formdata, {
+      //reportProgress: true,
+      //responseType: 'text'
+    //});
+
+    //return this.http.request(req);
+  }
+
+  toDataURL(src: string): Promise<any> {
+
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.onload = function () {
+        var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement('CANVAS');
+        var ctx: any = canvas.getContext('2d');
+        var dataURL;
+        // canvas.height = this.naturalWidth;
+        // canvas.width = this.naturalWidth;
+        // canvas.height = 200;
+        // canvas.width = 200;
+        canvas.width = 200;
+        canvas.height = 200;
+        ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 200, 200);
+        dataURL = canvas.toDataURL("image/jpeg");
+        resolve(dataURL);
+      };
+      img.src = src;
+    })
   }
 
   getFiles(): Observable<any> {
