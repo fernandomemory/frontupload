@@ -16,7 +16,7 @@ import { UploadFileService } from './upload/upload-file.service';
   selector: '[appDnd]'
 })
 export class DndDirective {
-  answer:any;
+  
   @Output('files') files: EventEmitter<FileHandle[]> = new EventEmitter();
   @HostBinding('style.background') private background = '#eee';
   constructor(private sanitizer: DomSanitizer, private http: HttpClient, private service: UploadFileService) { }
@@ -45,19 +45,11 @@ export class DndDirective {
     let base64;
     let jSonImage;
 
-
-
-      const file = evt.dataTransfer.files[0];
-      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-      const urlBase = window.URL.createObjectURL(file);
-
-      base64 = await this.toDataURL(urlBase);
-
-      files.push({
-        file,
-        url
-      });
-
+    const file = evt.dataTransfer.files[0];
+    const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+    const urlBase = window.URL.createObjectURL(file);
+    let classify;
+    base64 = await this.toDataURL(urlBase);
 
     jSonImage = [
       {
@@ -66,14 +58,20 @@ export class DndDirective {
         , "type": 1
       }
     ];
+    
 
     this.service.upload(jSonImage[0]).subscribe((response) => {
-      console.log(response.classify['classe']);
-    })
+      classify = response.classify['classe'];
 
-    if (files.length > 0) {
-      this.files.emit(files);
-    }
+      files.push({
+        file,
+        url,
+        classify
+      });
+      if (files.length > 0) {
+        this.files.emit(files);
+      }
+    })
   }
 
   toDataURL(src: string): Promise<any> {

@@ -355,23 +355,8 @@
   </p>
 
 
-
-</div>
-<div class="container" style="width:400px">
-  <div style="color: blue; margin-bottom: 20px">
-    <h3>{{title}}</h3>
-
-  </div>
-
-  <form-upload></form-upload>
-
-  <br />
-  <br />
-
-  <list-upload></list-upload>
-</div>
-<div class="container" style="width:400px">
-  <div class="dropzone" style="width: 500px; height: 250px; text-align: center;" appDnd (files)="filesDropped($event)">
+  <h2>Teste Aqui</h2>
+  <div class="dropzone" style="width: 500px; height: 250px; text-align: center;" appDnd (files)="filesDropped($event)" >
     <svg xmlns="http://www.w3.org/2000/svg" width="106" height="116" fill="currentColor" class="bi bi-upload"
       viewBox="0 0 16 16">
       <path
@@ -380,12 +365,12 @@
         d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
     </svg>
     <br>
-    <span style="font-size: 25px;">Cole sua imagem aqui</span>
-
+    <span style="font-size: 25px;">Arraste a imagem</span>
   </div>
-  <div style="margin-top: 20px; width: 500px; height: 400px;">
-    <div *ngFor="let file of uploadedFiles">
-      <img [src]="file.url" style="width: 100px; height: 100px;" />
-    </div>
+  
+  <div *ngFor="let file of uploadedFiles">
+    <img [src]="file.url" style="width: 100px; height: 100px;" />
+    <p>{{file.classify}}</p>
   </div>
+  <form-upload></form-upload>
 </div>

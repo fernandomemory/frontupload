@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest,  HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { FileHandle } from '../file-handle';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFileService {
-
-  constructor(private http: HttpClient) { }
+  @Output('files') files: EventEmitter<FileHandle[]> = new EventEmitter();
+  constructor(private http: HttpClient,private sanitizer: DomSanitizer) { }
 
    // Http Options
    httpOptions = {
@@ -36,14 +38,14 @@ export class UploadFileService {
   };
 
 
-  async pushFileToStorage(file: File): Promise<Observable<any>> {
-    const formdata: FormData = new FormData();
-    //pushFileToStorage(file: File): Observable<HttpEvent<{}>>
-    formdata.append('file', file);
+  async pushFileToStorage(file: File){
+    
+    let files: FileHandle[] = [];
     let base64;
+    const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
     const urlBase = window.URL.createObjectURL(file);
     base64 = await this.toDataURL(urlBase);
-
+    let classify;
     let jSonImage;
     jSonImage = [
       {
@@ -54,15 +56,20 @@ export class UploadFileService {
     ];
 
     this.upload(jSonImage[0]).subscribe((response) => {
-      console.log(response.classify['classe']);
-    })
-    return;
-    //const req = new HttpRequest('POST', 'http://localhost:8080/api/file/upload', formdata, {
-      //reportProgress: true,
-      //responseType: 'text'
-    //});
+      classify = response.classify['classe'];
 
-    //return this.http.request(req);
+      files.push({
+        file,
+        url,
+        classify
+      });
+      if (files.length > 0) {
+        this.files.emit(files);
+      }
+      
+    })
+    
+    return files;
   }
 
   toDataURL(src: string): Promise<any> {
